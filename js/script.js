@@ -65,19 +65,36 @@ document.querySelector('#activities').addEventListener('change', (e) => {
 })
 //targeting the payment selection of the page
 let payment = document.querySelector('#payment')
+let paypal = document.querySelector('#paypal')
+let bitcoin = document.querySelector('#bitcoin')
+let creditCard = document.querySelector('#credit-card')
+
 //from the payment options, we are setting credit/debit card as default payment
 const creditDefault = payment[1].setAttribute('selected','');
+const paypalDefault = paypal.setAttribute('hidden','')
+const bitcoinDefault = bitcoin.setAttribute('hidden','')
 //event for when thepayment is changed to other payment options and hidding card information to enter
 payment.addEventListener('change', (e) => {
-    if(e.target.value === 'paypal' || e.target.value ==='bitcoin'){
-        document.querySelector('#credit-card').setAttribute('hidden','')
-        
+    if(e.target.value === 'paypal'){
+        creditCard.setAttribute('hidden','')
+        bitcoin.setAttribute('hidden','')
+        paypal.removeAttribute('hidden')
+    }if(e.target.value ==='bitcoin'){
+        creditCard.setAttribute('hidden','')
+        paypal.setAttribute('hidden', '')
+        bitcoin.removeAttribute('hidden')
+
     }if(e.target.value === 'credit-card'){
-        document.getElementById('credit-card').removeAttribute('hidden')
+        creditCard.removeAttribute('hidden')
+        paypal.setAttribute('hidden', '')
+        bitcoin.setAttribute('hidden', '')
       }
 })
+
 //event when user clicks submit button 
-document.querySelector('button').addEventListener('click', (e) => {
+document.querySelector('[method="post"]').addEventListener('submit', (e) => {
+    //prevents the form from reloading any updates being made
+    e.preventDefault();
     //pulling elements from the html to use in later conditions
     let zipInput = document.getElementById('zip').value;
     let ccNum = document.getElementById('cc-num').value;
